@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import PrivateRouter from './PrivateRouter'
-import { Dashboard, SettingsUser } from '../../../../UI/Pages'
+import { Dashboard, SettingsUser, SystemUsers } from '../../../../UI/Pages'
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { Sidebar } from '../../../../UI/Components/Sidebar'
 import { MainContext } from '../../..'
@@ -23,9 +23,13 @@ export default () => {
                 <div className="relative top-[-8rem] px-4 md:px-10 mx-auto w-full">
                     <Routes>
                         <Route element={<PrivateRouter />}>
-                            <Route path="/*" element={<Navigate to="/app/dashboard" />} />
-                            <Route index path="/" element={<Navigate to="/app/dashboard" />}></Route>
-                            <Route path='/dashboard' element={<SettingsUser />} />
+                            <Route path="/*" element={<div>No esta la ruta</div>} />
+                            {//  <Route index path="/" element={<Navigate to="/app/dashboard" />}></Route>
+                            }
+                            <Route index path="/" element={<div>No esta la ruta</div>}></Route>
+                            <Route path='/dashboard' element={<Dashboard />} />
+                            <Route path='/user-settings' element={<SettingsUser />} />
+                            <Route path='/system-users' element={<SystemUsers />} />
                         </Route>
                     </Routes>
                 </div>

@@ -5,6 +5,8 @@ import { loginValidation } from '../utils/validations';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { postLoginUser } from '../../Application/Axios/Petitions';
 import { MainContext } from '../../Infrastructure';
+import Logo from 'Images/login/logo.png'
+import { encode, parseJwt } from '../../Application/utils';
 
 
 export default () => {
@@ -34,13 +36,21 @@ export default () => {
                             token: null
                         }
                     }))
-                if (res.data) {
-                    localStorage.setItem('user', { token: res.data.data.token, info: res.data.data.token });
+                if (res = res.data) {
+                    console.log(res);
+                    console.log(parseJwt(res.token).exp >= Math.floor(Date.now() / 1000));
+
+                    const userString = Object.entries(res.data.user).map(attr => (`${attr[0]}=${attr[1]},`)).join('');
+
+                    window.localStorage.setItem('user', userString);
+                    window.localStorage.setItem('TOKEN', encode(res.token));
+
+                    console.log(window.localStorage.getItem("TOKEN"));
                     setMainContext((prevState) => ({
                         ...prevState,
                         user: {
-                            token: res.data.data.token,
-                            info: res.data.data.user
+                            token: window.localStorage.getItem('TOKEN'),
+                            info: window.localStorage.getItem('user')
                         }
                     }))
                 }
@@ -63,7 +73,7 @@ export default () => {
                                         <div className="text-center">
                                             <img
                                                 className="mx-auto w-68"
-                                                src="https://github.com/remix-run/react-router/assets/63087709/25d08037-340f-4447-bc1e-47f72d24d7af"
+                                                src={Logo}
                                                 alt="logo" />
                                         </div>
 

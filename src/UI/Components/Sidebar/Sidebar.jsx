@@ -45,7 +45,7 @@ export default function ({ user }) {
                                         className="md:block text-left md:pb-2 text-blueGray-600 mr-0 inline-block whitespace-nowrap text-sm uppercase font-bold p-4 px-0"
                                         to="/"
                                     >
-                                        Notus React
+                                        ZTechnology
                                     </Link>
                                 </div>
                                 <div className="w-6/12 flex justify-end">
@@ -79,7 +79,7 @@ export default function ({ user }) {
                             {info?.roleId == 1 && <SidebarLink iconProps={{
                                 attributes: { h: 'h-5', w: 'w-5' },
                                 IconPath: usersIcon,
-                                text: 'Platform users', toPath: "/app/users"
+                                text: 'Platform users', toPath: "/app/system-users"
                             }} />}
 
                             <SidebarLink iconProps={{
@@ -116,7 +116,7 @@ export default function ({ user }) {
                             <SidebarLink iconProps={{
                                 attributes: { h: 'h-5', w: 'w-5' },
                                 IconPath: userIcon,
-                                text: 'User', toPath: "/app/profile"
+                                text: 'User', toPath: "/app/user-settings"
                             }} />
                         </ul>
 

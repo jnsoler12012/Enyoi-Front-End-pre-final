@@ -6,8 +6,10 @@ import { PublicRoutes } from './routes/public'
 import { MainContext } from '../App'
 import { AxiosContext } from '../AxiosProvider'
 
-import '../utils/ensure-basename';
+import '../../Application/utils/ensure-basename';
+
 import { LoadingScreen } from '../../UI/Components/Loading'
+import { NotificationDropdown } from '../../UI/Components/Dropdowns'
 
 
 export default function ({ config }) {
@@ -34,15 +36,18 @@ export default function ({ config }) {
     return (
         <LoadingScreen loading={mainContext.loading}>
             <BrowserRouter basename={config.basename}>
-                <Routes>
-                    <Route path="/*" element={<Navigate to="/app/dashboard" />} />
-                    <Route index path="/" element={<Navigate to="/app/dashboard" />}></Route>
+                <NotificationDropdown mainState={mainContext} setMainState={setMainContext}>
+                    <Routes>
+                        <Route path="/*" element={<Navigate to="/app/dashboard" />} />
+                        <Route index path="/" element={<Navigate to="/app/dashboard" />}></Route>
 
-                    <Route path='/app/*' element={<PrivateRoutes />} />
+                        <Route path='/app/*' element={<PrivateRoutes />} />
 
-                    <Route path='/public/*' element={<PublicRoutes />} />
+                        <Route path='/public/*' element={<PublicRoutes />} />
 
-                </Routes>
+                    </Routes>
+                </NotificationDropdown>
+
             </BrowserRouter>
         </LoadingScreen>)
 }

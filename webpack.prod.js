@@ -1,5 +1,4 @@
 const path = require('path');
-const WebpackShellPluginNext = require('webpack-shell-plugin-next');
 const TerserPlugin = require('terser-webpack-plugin');
 //const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const { merge } = require("webpack-merge");
@@ -8,18 +7,11 @@ const common = require("./webpack.common.js");
 module.exports = merge(common, {
     mode: "production",
     output: {
-        publicPath: './dist/',
+        publicPath: '/',
     },
     devtool: "source-map",
     plugins: [
         //new BundleAnalyzerPlugin(),
-        new WebpackShellPluginNext({
-            onBuildEnd: {
-                scripts: ['node copy-html-hashed.js'],
-                blocking: false,
-                parallel: true
-            }
-        })
     ],
     module: {
         rules: [
@@ -31,7 +23,6 @@ module.exports = merge(common, {
                         options: {
                             outputPath: 'assets',
                             name: `[contenthash].[ext]`,
-                            publicPath: './dist/assets',
                         },
                     }
                 ]

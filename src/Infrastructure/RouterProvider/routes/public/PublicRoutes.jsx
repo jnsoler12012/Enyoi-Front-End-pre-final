@@ -7,8 +7,10 @@ export default () => {
     return (
         <Routes>
             <Route element={<PublicRouter />}>
-                <Route path="/*" element={<Navigate to="/app/dashboard" />} />
-                <Route index path="/" element={<Navigate to="/app/dashboard" />}></Route>
+                <Route path="/*" element={<div>No esta la ruta</div>} />
+                {//  <Route index path="/" element={<Navigate to="/app/dashboard" />}></Route>
+                }
+                <Route index path="/" element={<div>No esta la ruta</div>}></Route>
                 <Route path='/login' element={<Login />} />
                 <Route path='/tester' element={<Test />} />
             </Route>

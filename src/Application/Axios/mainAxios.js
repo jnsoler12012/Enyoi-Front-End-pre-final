@@ -23,16 +23,24 @@ export default ({ context, props }) => {
                 method,
                 url,
             });
+            //console.log(petitionResponse);
 
-            response.data = petitionResponse
+            response.data = petitionResponse.data
         } catch (error) {
-            response.error = error
+            console.log(error);
+            response.error = error.response.data
         } finally {
+            console.log(response)
             setMainContext((prevState) => ({
                 ...prevState,
-                loading: false
+                loading: false,
+                notification: {
+                    type: (response?.error ? "WARNING" : "SUCCESS"),
+                    message: (response.error ? `${response?.error?.message} - ${response?.error?.path}` : response?.data?.message),
+                }
             }))
         }
+
         return response;
     })();
 }

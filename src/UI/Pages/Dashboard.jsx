@@ -5,8 +5,8 @@ export default () => {
     return (
         <>
             <div className="flex flex-wrap">
-            Esto es adentro
-            
+                DASHBOARD
+
             </div>
         </>
     )

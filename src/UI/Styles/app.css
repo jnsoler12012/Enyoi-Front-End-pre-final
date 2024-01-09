@@ -12,16 +12,34 @@
 	0% {
 		-webkit-transform: rotate(0deg);
 	}
+
 	100% {
 		-webkit-transform: rotate(360deg);
 	}
 }
 
-@keyframes spinner {
-	0% {
-		transform: rotate(0deg);
+@keyframes slideIn {
+	from {
+	  transform: translateY(-100%);
 	}
-	100% {
-		transform: rotate(360deg);
+	to {
+	  transform: translateY(0);
 	}
-}
+  }
+  
+  @keyframes slideOut {
+	from {
+	  transform: translateY(0);
+	}
+	to {
+	  transform: translateY(-100%);
+	}
+  }
+  
+  .animate-slideIn {
+	animation: slideIn 0.5s ease-in;
+  }
+  
+  .animate-slideOut {
+	animation: slideOut 0.7s ease-out forwards; /* Usa forwards para mantener el estado final de la animación al salir */
+  }

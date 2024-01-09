@@ -9,9 +9,8 @@ module.exports = merge(common, {
     },
     devtool: 'eval-source-map',
     devServer: {
-        historyApiFallback: {
-            rewrites: [{ from: /\//, to: '/404.html' }],
-        },
+        historyApiFallback: true,
+        port: 3000,
     },
     module: {
         rules: [

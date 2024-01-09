@@ -12,7 +12,8 @@ module.exports = {
     resolve: {
         extensions: ['.js', '.jsx', '.json'],
         alias: {
-            Images: path.resolve(__dirname, 'src/UI/assets/img/'),
+            Images: path.resolve(__dirname, 'src/UI/utils/img'),
+            Web_React_Icons: 'react-icons',
         },
     },
     plugins: [
@@ -51,7 +52,7 @@ module.exports = {
                 test: /\.css$/i,
                 include: path.resolve(__dirname, 'src'),
                 use: ['style-loader', 'css-loader', 'postcss-loader'],
-            },
+            }
         ],
     },
     performance: {

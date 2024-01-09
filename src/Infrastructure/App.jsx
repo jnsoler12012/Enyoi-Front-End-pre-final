@@ -6,21 +6,28 @@ import { RouterProvider } from './RouterProvider'
 export const MainContext = createContext(null)
 
 export const MainApp = () => {
-  console.log("ENTRAMOS", 
+  console.log("ENTRAMOS", window.localStorage.getItem("TOKEN")
   )
-  
+  // window.localStorage.removeItem("TOKEN")
+  // window.localStorage.removeItem("user")
+
   const [main, setMain] = useState({
     loading: false,
     user: {
-      token: null,
-      info: null
+      token: window.localStorage.getItem("TOKEN") && window.localStorage.getItem("TOKEN"),
+      info: window.localStorage.getItem("user") && window.localStorage.getItem("user").split(',').slice(0, -1).reduce((acc, curr) => (typeof acc === 'string' ? ({
+        [acc.split('=')[0]]: acc.split('=')[1]
+      }) : ({
+        ...acc, [curr.split('=')[0]]: curr.split('=')[1]
+      })), {})
     },
     data: {},
-    services: null
+    services: null,
+    notification: {}
   })
 
   useEffect(() => {
-    console.log("_____________MAIN A CAMBIADO", main)
+    console.log("_____________MAIN A CAMBIADO", main, window.localStorage.getItem("TOKEN"))
 
     return () => {
       console.log("_____________RRR MAIN A CAMBIADO", main)

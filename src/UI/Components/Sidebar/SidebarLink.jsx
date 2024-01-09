@@ -1,11 +1,18 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
 
 export default function ({ iconProps }) {
     const { attributes, IconPath, text, toPath } = iconProps
     const { w, h } = attributes
 
-    console.log(window.location.href.indexOf(toPath) === -1)
+    const location = useLocation();
+
+    useEffect(() => {
+        //console.log(`The current route is ${location.pathname}`);
+    }, [location]);
+
+
+    //console.log(window.location.href.indexOf(toPath) === -1, window.location.href)
 
     return (
         <li className={"items-center"}>

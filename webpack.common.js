@@ -13,6 +13,7 @@ module.exports = {
         extensions: ['.js', '.jsx', '.json'],
         alias: {
             Images: path.resolve(__dirname, 'src/UI/utils/img'),
+            SVG: path.resolve(__dirname, 'src/UI/utils/svg'),
             Web_React_Icons: 'react-icons',
         },
     },

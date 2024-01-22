@@ -1,9 +1,16 @@
 import React from 'react'
 import ProfileUser from 'Images/SettingsUser/profileUser.png'
-import { FaBriefcase, FaMapMarkerAlt } from "Web_React_Icons/fa";
+import { FaBriefcase, FaRegIdCard } from "Web_React_Icons/fa";
 import { LiaUniversitySolid } from "Web_React_Icons/lia";
+import { MdAttachEmail } from "Web_React_Icons/md";
+import { GrUserAdmin, GrUser } from "Web_React_Icons/gr";
 
-export default function () {
+
+export default function ({ user }) {
+    const { createdAt, document, email, id, names, role, state } = user
+
+    console.log(new Date(createdAt), createdAt, document, email, id, names, role, state);
+
     return (
         <>
             <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-xl rounded-lg mt-16">
@@ -26,44 +33,42 @@ export default function () {
                                     </span>
                                     <span className="text-sm text-blueGray-400">Friends</span>
                                 </div>
-                                <div className="mr-4 p-3 text-center">
-                                    <span className="text-xl font-bold block uppercase tracking-wide text-blueGray-600">
-                                        10
-                                    </span>
-                                    <span className="text-sm text-blueGray-400">Photos</span>
-                                </div>
-                                <div className="lg:mr-4 p-3 text-center">
-                                    <span className="text-xl font-bold block uppercase tracking-wide text-blueGray-600">
-                                        89
-                                    </span>
-                                    <span className="text-sm text-blueGray-400">Comments</span>
-                                </div>
                             </div>
                         </div>
                     </div>
                     <div className="text-center mt-12">
                         <h3 className="text-xl font-semibold leading-normal text-blueGray-700 mb-2">
-                            Jenna Stones
+                            {names}
                         </h3>
-                        <div className="flex justify-center text-sm leading-normal mt-8 mb-1 text-blueGray-400 font-bold uppercase">
-                            <FaMapMarkerAlt className="mr-2 text-lg text-blueGray-400" />
-                            Los Angeles, California
+                        <div className="flex justify-center items-center text-sm leading-normal mt-8 mb-1 text-blueGray-800 font-bold uppercase">
+                            <MdAttachEmail className="mr-2 text-lg h-[1.4rem] w-[1.4rem]" />
+                            {email}
                         </div>
-                        <div className="flex justify-center mb-2 text-blueGray-600 mt-5">
-                            <FaBriefcase className="mr-2 text-lg text-blueGray-400" />
-                            Solution Manager - Creative Tim Officer
+                        <div className="flex justify-center items-center mb-2 text-blueGray-600 mt-5">
+                            <FaRegIdCard className="mr-2 text-lg text-blueGray-600 h-[1.3rem] w-[1.3rem]" />
+                            {document}
                         </div>
-                        <div className="flex justify-center mb-2 text-blueGray-600">
-                            <LiaUniversitySolid className="mr-2 text-lg text-blueGray-400" />
-                            University of Computer Science
+                        <div className="flex justify-center items-center mb-2 text-blueGray-600 mt-5">
+                            {
+                                role == 'ADMIN'
+                                    ? (
+                                        <GrUserAdmin className="mr-2 text-lg text-blueGray-600 h-[1.4rem] w-[1.4rem]" />
+                                    )
+                                    : (
+                                        <GrUser className="mr-2 text-lg text-blueGray-600 h-[1.4rem] w-[1.4rem]" />
+                                    )
+                            }
+                            {role}
                         </div>
                     </div>
-                    <div className="mt-10 py-10 border-t border-blueGray-200 text-center">
+                    <div className="mt-5 py-10 border-t border-blueGray-200 text-center">
                         <div className="flex flex-wrap justify-center">
                             <div className="w-full lg:w-9/12 px-4">
                                 <p className="mb-4 text-lg leading-relaxed text-blueGray-700">
-                                    An artist of considerable range, Jenna the name taken by
-                                    Melbourne-raised.
+                                    User Created at:
+                                </p>
+                                <p className="mb-4 text-lg leading-relaxed font-bold">
+                                    {new Date(createdAt).toDateString()}
                                 </p>
                             </div>
                         </div>

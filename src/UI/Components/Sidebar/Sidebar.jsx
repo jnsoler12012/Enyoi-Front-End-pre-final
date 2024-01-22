@@ -2,16 +2,22 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { UserDropdown } from "../Dropdowns";
 import SidebarLink from "./SidebarLink";
-import { dashboardIcon, usersIcon, quotesIcon, menuIcon, xMark, userIcon, clientsIcon, productsIcon } from "../../utils/svg";
+import { dashboardIcon, usersIcon, quotesIcon, menuIcon, xMark, userIcon, clientsIcon, productsIcon, logOutIcon } from "../../utils/svg";
+import { logOut } from "../../../Infrastructure/utils";
+import QuoteCart from "./QuoteCart";
 
-export default function ({ user }) {
+export default function ({ user, setMainContext }) {
     const { token, info } = user
     const [collapseShow, setCollapseShow] = useState("hidden");
+
+    const logOutAction = () => {
+        logOut(setMainContext, 'Info')
+    }
 
     console.log(window.location.href, user)
     return (
         <>
-            <nav className="md:left-0 md:block md:fixed md:top-0 md:bottom-0 md:overflow-y-auto md:flex-row md:flex-nowrap md:overflow-hidden shadow-xl bg-white flex flex-wrap items-center justify-between relative md:w-64 z-10 py-4 px-6">
+            <nav className="md:left-0 md:block md:fixed md:top-0 md:bottom-0 md:overflow-y-auto md:flex-row md:flex-nowrap md:overflow-hidden shadow-xl bg-white flex flex-wrap items-center justify-between relative md:w-64 py-4 px-6 z-[2]">
                 <div className="md:flex-col md:items-stretch md:min-h-full md:flex-nowrap px-0 flex flex-wrap items-center justify-between w-full mx-auto">
                     {/* Toggler */}
                     <button
@@ -25,11 +31,17 @@ export default function ({ user }) {
                     </button>
                     {/* Brand */}
                     <Link
-                        className="md:block text-left md:pb-2 text-blueGray-600 mr-0 inline-block whitespace-nowrap text-sm uppercase font-bold p-4 px-0"
+                        className="md:inline-block text-left md:pb-2 text-blueGray-600 mr-0 hidden whitespace-nowrap text-sm uppercase font-bold p-4 px-0"
                         to="/"
                     >
                         ZTechnology
                     </Link>
+                    <div className="flex flex-row justify-between list-none items-center md:hidden w-[83%]">
+                        <div className="flex items-center">
+                            <h3 className="mr-[15px] font-[700] text-[1.5rem]">{info?.role}</h3><p className="text-[#808080]">{info?.names}</p>
+                        </div>
+                        <QuoteCart id={2}/>
+                    </div>
                     {/* Collapse */}
                     <div
                         className={
@@ -75,8 +87,8 @@ export default function ({ user }) {
                                 IconPath: dashboardIcon,
                                 text: 'Dashboard', toPath: "/app/dashboard"
                             }} />
-
-                            {info?.roleId == 1 && <SidebarLink iconProps={{
+                            {/* info?.role == 'ADMIN' */}
+                            {info?.role == 'ADMIN' && <SidebarLink iconProps={{
                                 attributes: { h: 'h-5', w: 'w-5' },
                                 IconPath: usersIcon,
                                 text: 'Platform users', toPath: "/app/system-users"
@@ -85,7 +97,7 @@ export default function ({ user }) {
                             <SidebarLink iconProps={{
                                 attributes: { h: 'h-5', w: 'w-5' },
                                 IconPath: clientsIcon,
-                                text: 'clients', toPath: "/app/clients"
+                                text: 'customers', toPath: "/app/customers"
                             }} />
 
                             <SidebarLink iconProps={{
@@ -112,7 +124,7 @@ export default function ({ user }) {
                         </h6>
                         {/* Navigation */}
 
-                        <ul className="md:flex-col md:min-w-full flex flex-col list-none md:mb-4">
+                        <ul className="md:flex-col md:min-w-full flex flex-col list-none">
                             <SidebarLink iconProps={{
                                 attributes: { h: 'h-5', w: 'w-5' },
                                 IconPath: userIcon,
@@ -122,6 +134,21 @@ export default function ({ user }) {
 
                         {/* Divider */}
                         <hr className="my-4 md:min-w-full" />
+                        <ul className="md:flex-col md:min-w-full flex flex-col list-none">
+                            <li className={"items-center"}>
+                                <div
+                                    className={
+                                        "flex items-center text-xs uppercase py-3 font-bold mr-1 parentIconLogOut"
+                                    }
+                                    onClick={() => logOutAction()}
+                                >
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.1" stroke="currentColor" className="w-[23px] h-[23px] text-[#3f4246] childIconLogOut">
+                                        {logOutIcon}
+                                    </svg>{" "}
+                                    <p className="ml-2">Log-out</p>
+                                </div>
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </nav>

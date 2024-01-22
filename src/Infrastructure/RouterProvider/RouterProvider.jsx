@@ -6,7 +6,7 @@ import { PublicRoutes } from './routes/public'
 import { MainContext } from '../App'
 import { AxiosContext } from '../AxiosProvider'
 
-import '../../Application/utils/ensure-basename';
+import '../utils/ensure-basename';
 
 import { LoadingScreen } from '../../UI/Components/Loading'
 import { NotificationDropdown } from '../../UI/Components/Dropdowns'
@@ -15,7 +15,7 @@ import { NotificationDropdown } from '../../UI/Components/Dropdowns'
 export default function ({ config }) {
     const [mainContext, setMainContext] = useContext(MainContext)
     const axiosContext = useContext(AxiosContext)
-    console.log("asddasdsadsa", setMainContext, mainContext, axiosContext)
+    //console.log("asddasdsadsa", setMainContext, mainContext, axiosContext)
 
     useEffect(() => {
         if (!mainContext.services) {

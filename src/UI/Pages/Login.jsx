@@ -3,10 +3,10 @@ import { CustomInput } from '../Components/Forms'
 import { useForm } from 'react-hook-form';
 import { loginValidation } from '../utils/validations';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { postLoginUser } from '../../Application/Axios/Petitions';
+import { postLoginUser } from '../../Application/Axios/post';
 import { MainContext } from '../../Infrastructure';
 import Logo from 'Images/login/logo.png'
-import { encode, parseJwt } from '../../Application/utils';
+import { encode, parseJwt } from '../../Infrastructure/utils';
 
 
 export default () => {
@@ -50,7 +50,7 @@ export default () => {
                         ...prevState,
                         user: {
                             token: window.localStorage.getItem('TOKEN'),
-                            info: window.localStorage.getItem('user')
+                            info: res.data.user
                         }
                     }))
                 }

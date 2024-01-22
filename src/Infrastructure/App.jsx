@@ -11,19 +11,42 @@ export const MainApp = () => {
   // window.localStorage.removeItem("TOKEN")
   // window.localStorage.removeItem("user")
 
+  const infoUser = window.localStorage.getItem("user") && window.localStorage.getItem("user").split(',').slice(0, -1).reduce((acc, curr) => (typeof acc === 'string' ? ({
+    [acc.split('=')[0]]: acc.split('=')[1]
+  }) : ({
+    ...acc, [curr.split('=')[0]]: curr.split('=')[1]
+  })), {})
+
   const [main, setMain] = useState({
+    reloadProducts: true,
+    reload: true,
     loading: false,
     user: {
-      token: window.localStorage.getItem("TOKEN") && window.localStorage.getItem("TOKEN"),
-      info: window.localStorage.getItem("user") && window.localStorage.getItem("user").split(',').slice(0, -1).reduce((acc, curr) => (typeof acc === 'string' ? ({
-        [acc.split('=')[0]]: acc.split('=')[1]
-      }) : ({
-        ...acc, [curr.split('=')[0]]: curr.split('=')[1]
-      })), {})
+      token: window.localStorage.getItem("TOKEN") == 'null' ? null : window.localStorage.getItem("TOKEN"),
+      info: infoUser
     },
     data: {},
+    products: {
+      filter: [],
+      data: {}
+    },
     services: null,
-    notification: {}
+    notification: {},
+    currentQuote: {
+      showed: false,
+      quoteData: {
+        id: Math.floor(Math.random() * (9999 - 1 + 1) + 1),
+        state: 'Created',
+        discountType: 'Standard',
+        discount: 0,
+        description: null,
+        customer: null,
+        deliveryType: 'Standard',
+        products: [],
+        user: infoUser
+      },
+      state: 'create'
+    }
   })
 
   useEffect(() => {
@@ -37,7 +60,7 @@ export const MainApp = () => {
 
   return (
     <MainContext.Provider value={[main, setMain]}>
-      <AxiosContextProvider config={{ baseURL: "http://localhost:8080/api" }}>
+      <AxiosContextProvider contextMain={[main, setMain]} config={{ baseURL: "http://localhost:8080/api" }}>
         <RouterProvider config={{ basename: "/v1" }} />
       </ AxiosContextProvider>
     </MainContext.Provider>

@@ -1,4 +1,5 @@
-import { mainAxios } from "../";
+import mainAxios from "../../mainAxios";
+
 
 export default ({ data, context }) => {
     console.log("POOSOSOSOSOOSOSOS")

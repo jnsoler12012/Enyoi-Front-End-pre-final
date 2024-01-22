@@ -9,9 +9,16 @@ export default function () {
     const openDropdownPopover = () => {
         createPopper(btnDropdownRef.current, popoverDropdownRef.current, {
             placement: "bottom-end",
-            
+            modifiers: [
+                {
+                    name: 'offset',
+                    options: {
+                        offset: [3, 10],
+                    },
+                },
+            ],
         });
-        setDropdownPopoverShow(true);
+        setDropdownPopoverShow(false);
     };
     const closeDropdownPopover = () => {
         setDropdownPopoverShow(false);
@@ -24,7 +31,6 @@ export default function () {
         <div>
             <a
                 className="text-blueGray-500 block"
-                href="#user"
                 ref={btnDropdownRef}
                 onClick={(e) => {
                     e.preventDefault();
@@ -39,18 +45,26 @@ export default function () {
             </a >
             <div
                 ref={popoverDropdownRef}
+                style={{
+                    marginTop: '6px !important',
+                    marginRight: '9px !important'
+                }}
                 className={
                     (dropdownPopoverShow ? "block " : "hidden ") +
-                    "bg-white text-base z-50 float-left py-2 list-none text-left rounded shadow-lg min-w-48"
+                    "bg-white text-base z-50 float-left py-1 list-none text-left rounded shadow-lg"
                 }
             >
                 <a
                     href="#user"
                     className={
-                        "text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
+                        "flex text-sm py-1 px-3 font-normal w-full whitespace-nowrap bg-transparent text-blueGray-700 parentIconLogOut"
                     }
-                    onClick={(e) => e.preventDefault()}
+                    onClick={(e) => {
+                        e.preventDefault()
+                        e.stopPropagation()
+                    }}
                 >
+                    <svg className="mr-[5px]" fill="none" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M17 16L21 12M21 12L17 8M21 12L7 12M13 16V17C13 18.6569 11.6569 20 10 20H6C4.34315 20 3 18.6569 3 17V7C3 5.34315 4.34315 4 6 4H10C11.6569 4 13 5.34315 13 7V8" stroke="#374151" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" /></svg>
                     Seprated link
                 </a>
             </div>

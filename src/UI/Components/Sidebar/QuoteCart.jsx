@@ -188,7 +188,7 @@ export default function ({ id }) {
     const handleSubmitForm = (dataForm, e) => {
         e.preventDefault()
         const eventId = e.nativeEvent.submitter.id
-        console.log(dataForm, e, e.nativeEvent.submitter.id);
+        console.log(dataForm, e, e.nativeEvent.submitter.id, getValueSubTotal(), getValueTotal());
 
 
         const dataFormFormated = Object.keys(dataForm).reduce((prev, nextAttr) => {
@@ -199,6 +199,9 @@ export default function ({ id }) {
             }
             return prev
         }, {})
+        console.log(dataFormFormated);
+        dataFormFormated['subTotal'] = getValueSubTotal()
+        dataFormFormated['total'] = getValueTotal()
         console.log(dataFormFormated);
 
         if (eventId.includes('submit')) {
@@ -271,7 +274,7 @@ export default function ({ id }) {
                 })
             )()
         } else if (eventId.includes('modify')) {
-            console.log('\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ modificamos');
+            console.log('\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ modificamos', dataFormFormated);
             (
                 async () => await postUpdateQuote({
                     data: dataFormFormated,
@@ -320,7 +323,7 @@ export default function ({ id }) {
                     <div id={`cart-${id}`} className={`bg-white ${showed ? 'w-[100%] md:w-[56%] lg:w-[35rem] opacity-100' : 'w-[0] opacity-0'} p-[1.8rem] ease-in-out transition-all duration-800 overflow-y-auto h-[100vh]`} >
                         <form id={`form-create-quote-${id}`} onSubmit={handleSubmit(handleSubmitForm)} className='flex flex-col justify-between h-full'>
 
-                            <div id={`header-quote-${id}`} className='bg-orange-300 flex content-center justify-between items-center mb-[1rem]'>
+                            <div id={`header-quote-${id}`} className='bg-white flex content-center justify-between items-center mb-[1rem]'>
                                 <FaArrowRight id={`quote-close-${id}`} style={{ width: '1.5rem', height: '1.5rem', cursor: 'pointer' }} />
                                 <h4 className='font-[700] text-[22px] uppercase'>
                                     {
@@ -337,8 +340,8 @@ export default function ({ id }) {
                                     )
                                 }
                             </div>
-                            <div id={`state-id-quote-${id}`} className='bg-purple-300 flex justify-between mb-[1rem]'>
-                                <div id={`state-quote-div`} className='bg-cyan-300 w-max flex flex-col items-center justify-between '>
+                            <div id={`state-id-quote-${id}`} className='flex justify-between mb-[1rem]'>
+                                <div id={`state-quote-div`} className=' w-max flex flex-col items-center justify-between '>
 
                                     <input
                                         {...register(`state-${id}`, {
@@ -364,7 +367,7 @@ export default function ({ id }) {
                                         state
                                     </label>
                                 </div>
-                                <div id={`id-quote-div`} className='bg-cyan-300 w-max flex flex-col items-start justify-center'>
+                                <div id={`id-quote-div`} className=' w-max flex flex-col items-start justify-center'>
                                     <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 ml-2" forhtml={'state-quote'}>
                                         ID
                                     </label>
@@ -389,7 +392,7 @@ export default function ({ id }) {
                                 </div>
 
                             </div>
-                            <div id='customer-quote' className='bg-green-300 flex h-[auto] flex-col mb-[1rem] items-center'>
+                            <div id='customer-quote' className=' flex h-[auto] flex-col mb-[1rem] items-center'>
                                 <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 ml-2" forhtml={'state-quote'}>
                                     Email Customer
                                 </label>
@@ -412,17 +415,17 @@ export default function ({ id }) {
                                     </p>
                                 }
                             </div>
-                            <div id='products-quote' className='bg-purple-300 flex h-[auto] flex-col mb-[1rem] pb-1 pl-1 pr-1'>
+                            <div id='products-quote' className=' flex h-[auto] flex-col mb-[1rem] pb-1 pl-1 pr-1'>
                                 <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 ml-2" forhtml={'state-quote'}>
                                     products
                                 </label>
-                                <div className='bg-orange-300 border-solid border-[1px] border-[black] p-1'  {...register(`products-${id}`, {
+                                <div className=' border-solid border-[1px] border-[black] p-1'  {...register(`products-${id}`, {
                                     value: quoteData.products,
                                 })} >
                                     {
                                         quoteData.products.length > 0
                                             ? quoteData.products.map(product => (
-                                                <div className='flex flex-row justify-evenly bg-white rounded-md px-2 py-1'>
+                                                <div className='flex flex-row justify-evenly bg-white rounded-md px-2 py-1  border-solid border-[1px] border-[black]'>
                                                     <div className='flex justify-center items-center mr-2'><img src={product.imageSrc} alt={product.name} className='w-[2rem] h-[2rem] md:w-[2.5rem] md:h-[2.5rem] rounded-full' /></div>
                                                     <div className='flex flex-col justify-center items-center mr-3'>
                                                         <label className="block uppercase tracking-wide text-gray-700 text-[.75rem] font-bold" >
@@ -483,7 +486,7 @@ export default function ({ id }) {
                                     }
                                 </div>
                             </div>
-                            <div id={`description-quote-div-${id}`} className='bg-red-200 flex flex-col mb-[1rem] h-auto'>
+                            <div id={`description-quote-div-${id}`} className=' flex flex-col mb-[1rem] h-auto'>
                                 <label forhtml={`description-quote-${id}`} className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 ml-2" >
                                     description
                                 </label>
@@ -506,8 +509,8 @@ export default function ({ id }) {
                                     </p>
                                 }
                             </div>
-                            <div id={`delivery-discount-quote-div`} className='bg-blue-300 flex flex-row mb-[1rem]'>
-                                <div className='flex flex-col justify-start items-center bg-slate-400 w-[50%]'>
+                            <div id={`delivery-discount-quote-div`} className='flex flex-row mb-[1rem]'>
+                                <div className='flex flex-col justify-start items-center  w-[50%]'>
                                     <label forhtml={`delivery-quote-${id}`} className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 ml-2" >
                                         delivery type
                                     </label>
@@ -527,7 +530,7 @@ export default function ({ id }) {
                                         This option for delivery type costs ${watch(`deliveryType-${id}`) == 'Standard' ? '10.00' : (watch(`deliveryType-${id}`) == 'Paid') ? '15.00' : '25.00, and it is delivered the same day'}
                                     </label>
                                 </div>
-                                <div className='flex flex-col bg-pink-400 w-[50%]'>
+                                <div className='flex flex-col w-[50%]'>
                                     <label forhtml={`discount-${id}`} className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 ml-2 text-center" >
                                         discount
                                     </label>
@@ -588,12 +591,12 @@ export default function ({ id }) {
                                 </div>
                             </div>
                             <hr className="mt-4 md:min-w-full" />
-                            <div id={`total-quote-div-${id}`} className='bg-blue-300 flex flex-col'>
+                            <div id={`total-quote-div-${id}`} className='bg-slate-200 flex flex-col'>
                                 <div className='flex flex-row justify-end items-center w-[100%]'>
                                     <label className="block tracking-wide text-gray-700 text-xs font-bold" forhtml={`subTotal-${id}`}>
                                         subtotal
                                     </label>
-                                    <div className={`block bg-none focus:border rounded py-1 leading-tight focus:outline-none bg-[#fff0] text-xs font-bold  tracking-[.10em] transition-colors duration-300 text-black w-auto bg-red-400 ml-2`}
+                                    <div className={`block bg-none focus:border rounded py-1 leading-tight focus:outline-none bg-[#fff0] text-xs font-bold  tracking-[.10em] transition-colors duration-300 text-black w-auto  ml-2`}
                                         id={`subTotal-${id}`}
                                         disabled={true}
                                         {...register(`subTotal-${id}`, {
@@ -612,7 +615,7 @@ export default function ({ id }) {
                                     <label className="block uppercase tracking-wide text-gray-700 text-md font-bold" forhtml={`total-${id}`}>
                                         total
                                     </label>
-                                    <div className={`block bg-none focus:border rounded py-1 leading-tight focus:outline-none bg-[#fff0] text-md font-bold  tracking-[.10em] transition-colors duration-300 text-black w-auto bg-red-400 ml-2`}
+                                    <div className={`block bg-none focus:border rounded py-1 leading-tight focus:outline-none bg-[#fff0] text-md font-bold  tracking-[.10em] transition-colors duration-300 text-black w-auto  ml-2`}
                                         id={`total-${id}`}
                                         disabled={true}
                                         {...register(`total-${id}`, {
@@ -664,7 +667,7 @@ export default function ({ id }) {
 
             </div>
             {
-                
+
             }
             {
 

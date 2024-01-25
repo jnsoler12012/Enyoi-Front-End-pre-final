@@ -4,6 +4,8 @@ import { default as checkTokenExpires } from './checkTokenExpires.js'
 import { default as logOut } from './logOut.js'
 import { default as useForceUpdate } from './useForceUpdate.js'
 import { default as useWindowsDimensions } from './useWindowsDimensions.js'
+import { default as convertPDFComponentToFile } from './convertPDFComponentToFile.js'
+
 
 export {
     decode, encode,
@@ -11,5 +13,6 @@ export {
     checkTokenExpires,
     logOut,
     useForceUpdate,
-    useWindowsDimensions
+    useWindowsDimensions,
+    convertPDFComponentToFile
 }

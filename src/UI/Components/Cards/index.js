@@ -9,6 +9,8 @@ import { default as CardCreateModifyProduct } from './CardCreateModifyProduct'
 
 import { default as CardQuoteTable } from './CardQuoteTable'
 
+import { default as CardGraphicBars } from './CardGraphicBars'
+
 export {
     CardProfile,
     CardUserInfo,
@@ -17,5 +19,6 @@ export {
     CardProductContainer,
     CardProductDisplayer,
     CardCreateModifyProduct,
-    CardQuoteTable
+    CardQuoteTable,
+    CardGraphicBars
 }

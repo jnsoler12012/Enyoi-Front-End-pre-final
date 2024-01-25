@@ -2,6 +2,11 @@ import React, { useContext } from 'react'
 import { emptyTable } from '../../utils/svg';
 import { MainContext } from '../../../Infrastructure';
 import { IoMdSettings } from "Web_React_Icons/io";
+import { Document, pdf } from '@react-pdf/renderer';
+import { convertPDFComponentToFile } from '../../../Infrastructure/utils';
+import { QuotePDFComponent } from '../PDF';
+import * as ReactDOMServer from 'react-dom/server';
+import emailjs from '@emailjs/browser';
 
 export default function ({ quoteData }) {
     const [mainContext, setMainContext] = useContext(MainContext)
@@ -33,6 +38,50 @@ export default function ({ quoteData }) {
                 showed: true
             }
         }))
+    }
+
+
+
+    const sendQuoteOverEmail = async (quote) => {
+        console.log(quote);
+
+        if (window.confirm(`Do you want to send this quote over email to the customer email? Customer email: ${quote.customer.email} `)) {
+            const file = <QuotePDFComponent data={quote} />
+            console.log(file);
+
+            const value = ReactDOMServer.renderToString(
+                <QuotePDFComponent data={quote} />
+            );
+
+            console.log(value, quote.user.names, quote.customer.names, quote.user.email, quote.description);
+
+            emailjs.send(
+                process.env.WEBPACK_EMAILJS_SERVICE_ID,
+                process.env.WEBPACK_EMAILJS_TEMPLATE_ID,
+                {
+                    to_name: quote.customer.names,
+                    from_name: quote.user.names,
+                    from_email: quote.user.email,
+                    to_email: quote.customer.email,
+                    message: quote.description,
+                    my_html: value
+                },
+                process.env.WEBPACK_EMAILJS_PUBLIC_KEY
+            ).then((res) => {
+                console.log('REEEEEEEEEEEEEEEEEEEEEEES', res);
+
+                setMainContext(prevState => ({
+                    ...prevState,
+                    notification: {
+                        type: "INFO",
+                        message: 'Succes on send quote to customer over email',
+                    },
+                }))
+            })
+        }
+
+
+
     }
 
     return (
@@ -99,16 +148,16 @@ export default function ({ quoteData }) {
                                                     <tr id={`TR-${singleQuote.id}`} >
                                                         <td
                                                             id={`state-${singleQuote}`}
-                                                            className="text-wrap border-t-0 px-2 align-middle border-l-0 border-r-0 text-xs py-2 bg-orange-500 flex justify-center items-center">
+                                                            className="text-wrap border-t-0 px-2 align-middle border-l-0 border-r-0 text-xs py-2flex justify-center items-center">
                                                             <div className={`${singleQuote.state == 'Created' ? 'bg-yellow-600' : (singleQuote.state == 'Canceled') ? 'bg-red-600' : 'bg-green-600'} rounded-full h-[25px] w-[25px]`}>
                                                             </div>
                                                         </td>
-                                                        <td className="text-wrap border-t-0 align-middle border-l-0 border-r-0 text-xs py-2 bg-orange-300 text-center">
+                                                        <td className="text-wrap border-t-0 align-middle border-l-0 border-r-0 text-xs py-2  text-center">
                                                             <div>
                                                                 {new Date(singleQuote.createdAt).toDateString()}
                                                             </div>
                                                         </td>
-                                                        <td className="text-wrap border-t-0 px-2 align-middle border-l-0 border-r-0 text-sm font-bold py-2 bg-orange-300 text-center">
+                                                        <td className="text-wrap border-t-0 px-2 align-middle border-l-0 border-r-0 text-sm font-bold py-2 text-center">
                                                             <div>
                                                                 #{singleQuote.id}
                                                             </div>
@@ -121,7 +170,7 @@ export default function ({ quoteData }) {
                                                                 {singleQuote.user.names}
                                                             </div>
                                                         </td>
-                                                        <td className="text-wrap border-t-0 px-1 align-middle border-l-0 border-r-0 text-xs py-1 bg-yellow-300 text-center">
+                                                        <td className="text-wrap border-t-0 px-1 align-middle border-l-0 border-r-0 text-xs py-1  text-center">
                                                             <div className='uppercase text-xs font-semibold italic'>
                                                                 {singleQuote.customer.names}
                                                             </div>
@@ -129,7 +178,7 @@ export default function ({ quoteData }) {
                                                                 {singleQuote.customer.email}
                                                             </div>
                                                         </td>
-                                                        <td className="text-wrap border-t-0 px-1 align-middle border-l-0 border-r-0 text-xs py-1 bg-yellow-300 text-center">
+                                                        <td className="text-wrap border-t-0 px-1 align-middle border-l-0 border-r-0 text-xs py-1  text-center">
                                                             <div className='uppercase text-sm'>
                                                                 {
                                                                     singleQuote.discountType == 'Standard'
@@ -138,7 +187,7 @@ export default function ({ quoteData }) {
                                                                 }
                                                             </div>
                                                         </td>
-                                                        <td className="text-wrap border-t-0 px-1 align-middle border-l-0 border-r-0 text-xs py-1 bg-yellow-300 text-center">
+                                                        <td className="text-wrap border-t-0 px-1 align-middle border-l-0 border-r-0 text-xs py-1  text-center">
                                                             <div className='text-sm flex justify-evenly items-end font-semibold italic'>
                                                                 {
                                                                     singleQuote.deliveryType == 'Premium'
@@ -154,7 +203,7 @@ export default function ({ quoteData }) {
                                                                 }  {singleQuote.deliveryType}
                                                             </div>
                                                         </td>
-                                                        <td className="text-wrap border-t-0 px-1 align-middle border-l-0 border-r-0 text-xs py-1 bg-yellow-300 text-center">
+                                                        <td className="text-wrap border-t-0 px-1 align-middle border-l-0 border-r-0 text-xs py-1 text-center">
                                                             <div className='uppercase text-sm italic font-semibold'>
                                                                 {
                                                                     new Intl.NumberFormat('en-US', {
@@ -281,6 +330,19 @@ export default function ({ quoteData }) {
                                                                         }
                                                                     </tbody>
                                                                 </table>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                                <tbody key={`Send-Quote-${singleQuote.id}`} className='border-[#202020] border-r-2 border-l-2 border-b-2'>
+                                                    <tr className="text-wrap border-t-0 px-1 align-middle border-l-0 border-r-0 text-xs py-1 text-center">
+                                                        <td colSpan='11' className="text-wrap border-t-0 align-middle border-l-0 border-r-0 text-xs text-center">
+                                                            <div className='bg-[#dcdcdc70] p-[0.4%] md:p-[0.6rem]'>
+                                                                <div className='px-1 italic align-middle border border-solid py-1 text-xs uppercase whitespace-nowrap font-semibold text-center bg-blueGray-50 text-blueGray-700 border-[#767676] border-t-2 border-l-2  border-r-2 border-b-0 cursor-pointer '
+                                                                    onClick={() => sendQuoteOverEmail(singleQuote)}
+                                                                >
+                                                                    SEND QUOTE TO CUSTOMER
+                                                                </div>
                                                             </div>
                                                         </td>
                                                     </tr>

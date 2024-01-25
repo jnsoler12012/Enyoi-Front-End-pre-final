@@ -1,6 +1,6 @@
 const path = require("path");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-
+const Dotenv = require('dotenv-webpack');
 
 module.exports = {
     entry: `${__dirname}/src/index.js`,
@@ -16,6 +16,9 @@ module.exports = {
             SVG: path.resolve(__dirname, 'src/UI/utils/svg'),
             Web_React_Icons: 'react-icons',
         },
+        fallback: {
+            fs: false // This line is added to handle 'fs' module for browser
+        }
     },
     plugins: [
         new HtmlWebpackPlugin({
@@ -24,6 +27,9 @@ module.exports = {
             //favicon: path.resolve(__dirname, 'src/UI/assets/ico/dashboard.ico'),
             title: 'custom name',
             inject: true,
+        }),
+        new Dotenv({
+            path: '.env',
         }),
     ],
     module: {
